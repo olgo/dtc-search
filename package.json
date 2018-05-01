@@ -1,0 +1,22 @@
+{
+  "name": "dtc-search",
+  "version": "1.0.0",
+  "description": "dtc search",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olgo/dtc-search.git"
+  },
+  "author": "codyr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/olgo/dtc-search/issues"
+  },
+  "homepage": "https://github.com/olgo/dtc-search#readme",
+  "dependencies": {
+    "electron": "^1.8.6"
+  }
+}
