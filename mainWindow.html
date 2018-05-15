@@ -12,9 +12,38 @@
             </div>
             <div>
                 <label>Enter DTC String</label>
-                <input type="text" id="item" autofocus>
+                <input type="text" id="dtc-string" autofocus>
             </div>
-            <button type="submit">decode</button>
+            <button type="submit" id="decode">decode</button>
         </form>
+        <ul>
+
+        </ul>
+
+        <script>
+            const electron = require('electron');
+            const {ipcRenderer} = electron;
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', submitForm);
+
+            function submitForm (e){
+                e.preventDefault();
+                console.log("click");
+                
+                const item = document.querySelector('#dtc-string').value;
+                ipcRenderer.send('decode', item);
+            }
+            
+            const ul = document.querySelector('ul');
+
+            ipcRenderer.on('item:add', function(e, item){
+                const li = document.createElement('li');
+                const itemText = document.createTextNode(item);
+                li.appendChild(itemText);
+                ul.appendChild(li);
+            });
+
+        </script>
     </body>
 </html>
