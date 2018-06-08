@@ -1,11 +1,13 @@
 const electron = require('electron');
 const url = require('url');
 const path = require('path');
-const parser = require('./js/parseFaults');
 
 //get app and browser window from electron
 const {app, BrowserWindow, Menu, ipcMain} = electron;
-const {streamFile} = parser;
+
+//var remote = require('remote'); // Load remote compnent that contains the dialog dependency
+//var dialog = remote.require('dialog'); // Load the dialogs component of the OS
+var fs = require('fs'); // Load the File System to execute our common tasks (CRUD)
 
 //declare main window
 let mainWindow;
@@ -54,15 +56,6 @@ function createInfoWindow(){
         infoWindow = null;
     });
 }
-
-//catch item:add
-ipcMain.on('decode', function(e, dtcFile, dtcString){
-    console.log(dtcString);
-
-    streamFile(dtcFile);
-    
-    mainWindow.webContents.send('item:add', dtcString);
-});
 
 //create menu template
 const mainMenuTemplate = [

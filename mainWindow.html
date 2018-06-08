@@ -8,19 +8,21 @@
         <form>
             <div>
                 <label>Select DTC List</label>
-                <input type="file">
+                <input type="file" id="dtc-file">
             </div>
             <div>
                 <label>Enter DTC String</label>
-                <input type="text" id="dtc-string" autofocus>
+                <input type="text" id="dtc-string" autofocus value="59 72 FB 02 10 01 A3 02 34 01 23 02 3C 01 23">
             </div>
             <button type="submit" id="decode">decode</button>
         </form>
-        <ul>
-
-        </ul>
+        <br>
+        <table width="100%"></table>
 
         <script>
+            let renderer = require('./renderer.js');
+            let fs = require('fs');
+            
             const electron = require('electron');
             const {ipcRenderer} = electron;
 
@@ -29,20 +31,19 @@
 
             function submitForm (e){
                 e.preventDefault();
-                console.log("click");
                 
-                const item = document.querySelector('#dtc-string').value;
-                ipcRenderer.send('decode', item);
-            }
-            
-            const ul = document.querySelector('ul');
+                let dtcFile = document.querySelector('#dtc-file').files[0].path;
+                let dtcString = document.querySelector('#dtc-string').value;
 
-            ipcRenderer.on('item:add', function(e, item){
-                const li = document.createElement('li');
-                const itemText = document.createTextNode(item);
-                li.appendChild(itemText);
-                ul.appendChild(li);
-            });
+                fs.readFile(dtcFile, function (err, data) {
+                    if (err) {
+                        return console.error(err);
+                    }
+                    //console.log("doc " + data);
+                    let results = renderer.getFaults(data, dtcString);
+                    
+                });
+            }
 
         </script>
     </body>
