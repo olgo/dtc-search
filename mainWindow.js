@@ -27,6 +27,6 @@ function submitForm (e){
 form.addEventListener('change', updateFileName);
 
 function updateFileName (e) {
-    console.log('dom',document.querySelector('.file-name').innerHTML)
+    
     document.querySelector('.file-name').innerHTML = e.target.files[0].name;
 }

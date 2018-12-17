@@ -5,6 +5,7 @@ let {xml2json, parseXml} = require('./js/parse.js')
 
 exports.getFaults = (dtcFile, dtcStr, callback) => {
     let parsedFaults = parseFaultsFromString(dtcStr)
+
     dtcFile = parseXml(dtcFile);
     dtcFile = xml2json(dtcFile, "");
     //console.log(dtcFile);
@@ -34,6 +35,17 @@ exports.getFaults = (dtcFile, dtcStr, callback) => {
     }
 }
 
+function convertStatus (status) {
+    status = status.substr(status.length-1, 1)
+    status = hex2bin(status)
+    status = status.substr(status.length-1, 1)
+    return status > 0 ? 'active' : 'history'
+}
+
+function hex2bin(hex){
+    return (parseInt(hex, 16).toString(2)).padStart(8, '0');
+}
+
 function displayDTCs(item){
     let table = document.querySelector('table');
     let tr = document.createElement('tr');
@@ -47,7 +59,7 @@ function displayDTCs(item){
     tdName.appendChild(itemName);
 
     let tdStatus = document.createElement('td');
-    let itemStatus = document.createTextNode(item.status);
+    let itemStatus = document.createTextNode( convertStatus(item.status) );
     tdStatus.appendChild(itemStatus);
 
     tr.appendChild(tdId);
